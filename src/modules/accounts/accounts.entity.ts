@@ -1,11 +1,16 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from 'modules/base';
-import { ID, GENDERS } from 'src/common/constants';
+import { CODE, GENDERS } from 'src/common/constant';
 
 @Entity({
     name: 'accounts'
 })
-export class Account extends BaseEntity {
+export class AccountEntity extends BaseEntity {
+
+    @Column({
+        unique: true
+    })
+    code: CODE;
 
     @Column({
         unique: true
@@ -33,7 +38,7 @@ export class Account extends BaseEntity {
     gender?: string = GENDERS.MALE;
 
     @Column()
-    roleId?: ID;
+    roleCode?: CODE;
 
     @Column()
     lastLoginAt: Date;

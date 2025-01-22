@@ -7,7 +7,7 @@ import {
     Logger
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { HttpErrorMessages, IResponseBody, ENV_LABELS } from '../constants';
+import { HttpErrorMessages, IResponseBody, ENV_LABELS } from '../constant';
 import { Response } from 'express';
 import { MongooseError } from 'mongoose';
 

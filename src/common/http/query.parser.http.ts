@@ -4,7 +4,7 @@ import { QueryParams } from './query.params.http';
 import { FindOneOptions } from 'typeorm';
 import queryString from 'querystring';
 
-import { ICriteria, IFilter, ISelect } from 'src/common/constants';
+import { ICriteria, IFilter, ISelect } from 'src/common/constant';
 
 // @Global()
 // @Module({

@@ -7,7 +7,7 @@ import { Model as MongooseModel, Connection,
     ProjectionType, QueryWithHelpers, UpdateWriteOpResult 
 } from 'mongoose';
 import { IFindModelsResult } from './base.mongoose.interfaces';
-import { ICriteria, IFilter, ISelect } from 'src/common/constants';
+import { ICriteria, IFilter, ISelect } from 'src/common/constant';
 import { PipelineStage, Aggregate } from 'mongoose';
 
 @Injectable()

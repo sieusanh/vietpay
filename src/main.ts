@@ -9,6 +9,7 @@ import { QueryParams } from 'common/http';
 import * as cors from 'cors';
 import helmet from 'helmet';
 import { ConsoleService } from "common/log";
+import { IApp } from 'common/config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
@@ -69,7 +70,7 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);   
     // const appPort = configService.get<string>('app.port');
-    const appConfig = configService.get('app');
+    const appConfig = configService.get<IApp>('app');
     const appPort = appConfig?.port;
 
     await app.listen(appPort).catch(err => {

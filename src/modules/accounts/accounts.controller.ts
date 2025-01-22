@@ -5,12 +5,12 @@ import {
 import { AccountsService } from './accounts.service';
 import { AccountDto, SignInDto, RegistryDto } from './accounts.dto';
 import { MODULE_INFO, MODULE_PATH_PARAMS, REGISTER_BODY_EXAMPLE } from './accounts.constant';
-import { IAccessInfo } from './accounts.interface';
+import { IAccessInfo } from './accounts.types';
 import { ApiTags, ApiBearerAuth, ApiHeader, ApiBody, ApiOperation } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
 import { RolesGuard, AuthGuard } from 'common/guards';
 import { Roles } from 'common/decorator';
-import { HttpErrorMessages, ICriteria } from 'common/constants';
+import { HttpErrorMessages, ICriteria } from 'src/common/constant';
 import { QueryParams, QueryParser } from 'common/http';
 
 @Controller(MODULE_INFO.CONTROLLER)

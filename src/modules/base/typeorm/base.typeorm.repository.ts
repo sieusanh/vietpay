@@ -6,8 +6,8 @@ import { Repository, InsertResult, UpdateResult, DeleteResult,
 
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { IFindEntitiesResult } from './base.typeorm.interfaces';
-import { ID } from 'src/common';
-import { ICriteria, FILTER_OPERATOR } from 'src/common/constants';
+import { CODE } from 'src/common';
+import { ICriteria, FILTER_OPERATOR } from 'src/common/constant';
 
 export class BaseTypeormRepository<Entity extends BaseEntity> 
     // extends Repository<Entity> 
@@ -63,7 +63,7 @@ export class BaseTypeormRepository<Entity extends BaseEntity>
         return data;
     }
 
-    findById(id: ID): Promise<Entity> {
+    findById(id: CODE): Promise<Entity> {
         const options: FindOneOptions<Entity> = {
             where: {
               id,
@@ -222,7 +222,7 @@ export class BaseTypeormRepository<Entity extends BaseEntity>
         return result;
     }
     
-    updateById(id: ID, entity: Entity): Promise<UpdateResult> {
+    updateOne(id: ID, entity: Entity): Promise<UpdateResult> {
 
         const findOptionsWhere: FindOptionsWhere<Entity> = { 
             id
@@ -242,7 +242,7 @@ export class BaseTypeormRepository<Entity extends BaseEntity>
 
     // }
 
-    deleteById(id: ID): Promise<DeleteResult> {
+    deleteOne(filter: ): Promise<DeleteResult> {
         const findOptionsWhere: FindOptionsWhere<Entity> = {
             id
         } as FindOptionsWhere<Entity>;

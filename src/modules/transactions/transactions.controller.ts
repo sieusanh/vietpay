@@ -13,7 +13,7 @@ import { ApiTags, ApiBearerAuth,
     ApiHeader, ApiBody, ApiOperation 
 } from '@nestjs/swagger';
 import { RolesGuard, AuthGuard } from 'common/guards';
-import { HttpErrorMessages, ICriteria, IFilter, PATH_PARAMS, ROLES } from 'common/constants';
+import { HttpErrorMessages, ICriteria, IFilter, PATH_PARAMS, ROLES } from 'src/common/constant';
 import { QueryParams, QueryParser } from 'common/http';
 import { MODULE_INFO, MODULE_PATH_PARAMS, LOG_INFOS } from './transactions.constant';
 import { ConsoleService } from 'common/log';

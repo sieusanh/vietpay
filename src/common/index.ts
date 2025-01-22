@@ -6,6 +6,6 @@ export * from './http';
 export * from './pipe';
 export * from './guards';
 export * from './interceptors';
-export * from './constants';
+export * from './constant';
 export * from './decorator';
 export * from './factory';

@@ -3,7 +3,7 @@ import { TransactionDto } from './transactions.dto';
 import { Transaction } from './transactions.model';
 import { TransactionsRepository } from './transactions.repository';
 import { DataModelFactory } from 'modules/base';
-import { ICriteria, ISelect, IFilter, ID } from 'common/constants';
+import { ICriteria, ISelect, IFilter, ID } from 'src/common/constant';
 import { IFindModelsResult, IFindDtosResult } from 'modules/base';
 import { ConsoleService } from 'common/log';
 

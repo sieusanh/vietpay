@@ -1,4 +1,7 @@
-
+export interface IApp {
+    host: string;
+    port: number;
+}
 
 export interface ITypeOrmDatasource {
     type: string;
@@ -13,3 +16,5 @@ export interface ITypeOrmDatasource {
 export interface IMongooseDatasource {
     uri: string;
 }
+
+

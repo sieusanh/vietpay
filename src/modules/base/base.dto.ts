@@ -1,5 +1,5 @@
 import { IsString, IsDate, IsOptional } from 'class-validator';
-import { ID } from 'src/common';
+import { CODE } from 'src/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseDto {
@@ -9,7 +9,7 @@ export class BaseDto {
     @ApiProperty({
         type: 'string'
     })
-    id: ID = '';
+    code: CODE = '';
     
     // @IsInt()
     // @IsOptional()

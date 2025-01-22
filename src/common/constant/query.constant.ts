@@ -2,14 +2,14 @@
 export type ISelect = string[];
 
 export enum FILTER_OPERATOR {
-    EQUALS = 'equals',
-    IS = 'is',
+    EQUALS = 'eq',
+    IN = 'in',
     CONTAINS = 'contains'
 }
 
 export type FilterOperator 
     = FILTER_OPERATOR.EQUALS 
-    | FILTER_OPERATOR.IS 
+    | FILTER_OPERATOR.IN 
     | FILTER_OPERATOR.CONTAINS;
 
 // export interface IFilter {

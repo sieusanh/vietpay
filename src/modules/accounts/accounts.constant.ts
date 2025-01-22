@@ -4,9 +4,8 @@ export const MODULE_INFO = {
     CONTROLLER: 'accounts',
 }
 
-export const MODULE_PATH_PARAMS = {
-    SIGNIN: 'login',
-    REGISTER: 'register',
+export const ENDPOINTS = {
+    
 }
 
 export const REGISTER_BODY_EXAMPLE = {

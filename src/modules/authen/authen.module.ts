@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthenController } from './authen.controller';
 import { AuthenService } from './authen.service';
+import { AccountsModule } from 'modules/accounts/accounts.module';
 import { DataEntityFactory } from 'modules/base';
 import { QueryParser } from 'common/http';
 import { CONFIG_KEYS } from 'common/config';
@@ -21,6 +22,7 @@ import { CONFIG_KEYS } from 'common/config';
             }),
             inject: [ConfigService]
         }),
+        AccountsModule
     ],
     controllers: [AuthenController],
     providers: [
@@ -29,4 +31,4 @@ import { CONFIG_KEYS } from 'common/config';
         QueryParser,
     ],
 })
-export class AccountsModule {}
+export class AuthenModule {}

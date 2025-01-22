@@ -1,6 +1,6 @@
 
 // consider adding format logic
-export type ID = string;
+export type CODE = string;
 
 export enum STATUS {
     ACTIVE = 1,
