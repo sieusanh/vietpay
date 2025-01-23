@@ -1,19 +1,3 @@
-// import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-
-// @Injectable()
-// export class AuthGuard implements CanActivate {
-//     canActivate(
-//         context: ExecutionContext,
-//     ): boolean | Promise<boolean> {
-//         const request = context.switchToHttp().getRequest();
-//         return validateRequest(request);
-//     }
-// }
-
-// function validateRequest(request: unknown) {
-//     return true;
-// }
-
 import { Injectable, CanActivate, ExecutionContext, 
     UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -25,7 +9,11 @@ interface IUser {
     name: string;
 }
 
-type ContextRequest = Request<IUser>;
+interface IRequestInfo {
+    user: IUser;
+}
+
+type RequestInfo = Request<IRequestInfo>;
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -37,29 +25,27 @@ export class AuthGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const ctx = context.switchToHttp();
-        const request = ctx.getRequest<ContextRequest>();
+        const request = ctx.getRequest<Request>();
+
+        console.log('================= request ', request)
         
         return this.validateRequest(request);
     }
 
-    private extractTokenFromHeader(request: ContextRequest): string | undefined {
-        const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    private extractTokenFromHeader(requestInfo: RequestInfo): string | undefined {
+        const [type, token] = requestInfo.headers.authorization?.split(' ') ?? [];
         return type === 'Bearer' ? token : undefined;
     }
 
-    async validateRequest(request: ContextRequest): Promise<boolean> {
+    async validateRequest(requestInfo: RequestInfo): Promise<boolean> {
 
-        const token = this.extractTokenFromHeader(request);
-        console.log('=================== token ', token)
+        const token = this.extractTokenFromHeader(requestInfo);
         if (!token) {
-            console.log('=================== here')
-
-            // throw new UnauthorizedException();
+            throw new UnauthorizedException();
         }
 
         try {
             const secret = this.configService.get<string>(CONFIG_KEYS.JWT_SECRET_KEY);
-            console.log('================= secret ', secret)
             const payload = await this.jwtService.verifyAsync(
                 token,
                 { secret }
@@ -67,9 +53,8 @@ export class AuthGuard implements CanActivate {
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
 
-            request.user = payload;
+            requestInfo.user = payload;
         } catch (err) {
-            console.log('======================= AuthGuard canActivate err ', err)
             throw new UnauthorizedException();
         }
 

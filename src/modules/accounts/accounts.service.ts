@@ -7,7 +7,7 @@ import { DataEntityFactory } from 'modules/base';
 import { CODE } from 'src/common/constant';
 import { ICriteria, ISelect, IFilter, ErrorMessages } from 'src/common/constant';
 import { IFindEntitiesResult, IFindDtosResult } from 'modules/base';
-import { IAccount, IAccountInfo } from './accounts.types';
+import { IAccount, ICreateAccount } from './accounts.types';
 
 @Injectable()
 export class AccountsService {
@@ -110,14 +110,14 @@ export class AccountsService {
     // }
 
     async updateOne(
-        id: ID, 
-        accountDto: AccountDto
+        code: CODE, 
+        updateAccountDto: UpdateAccountDto
     ) {
         try {
-            const entity: Account 
-            = this.dataEntityFactory.convertDtoToEntity(accountDto);
+            // const entity: Account 
+            // = this.dataEntityFactory.convertDtoToEntity(accountDto);
 
-            await this.repository.updateById(id, entity);
+            await this.repository.updateOne(id, entity);
 
         } catch (err) {
             throw err;

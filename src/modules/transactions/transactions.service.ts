@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionDto } from './transactions.dto';
-import { Transaction } from './transactions.model';
+import { TransactionModel } from './transactions.model';
 import { TransactionsRepository } from './transactions.repository';
 import { DataModelFactory } from 'modules/base';
-import { ICriteria, ISelect, IFilter, ID } from 'src/common/constant';
+import { ICriteria, ISelect, IFilter, CODE } from 'src/common/constant';
 import { IFindModelsResult, IFindDtosResult } from 'modules/base';
 import { ConsoleService } from 'common/log';
 
@@ -14,7 +14,7 @@ export class TransactionsService {
         protected repository: TransactionsRepository,
 
         protected dataModelFactory: 
-            DataModelFactory<TransactionDto, Transaction>,
+            DataModelFactory<TransactionDto, TransactionModel>,
         private consoleService: ConsoleService,
     ) {
         this.consoleService.setContext(TransactionsService.name);
@@ -22,7 +22,7 @@ export class TransactionsService {
 
     async insertOne(TransactionDto: TransactionDto) {
         try {
-            const TransactionEntity: Transaction
+            const TransactionEntity: TransactionModel
                 = this.dataModelFactory.convertDtoToModel(TransactionDto);
 
             const newModel 
@@ -30,24 +30,6 @@ export class TransactionsService {
 
             const resDto: TransactionDto 
                 = this.dataModelFactory.convertModelToDto(newModel);
-
-            return resDto;
-        } catch (err) {
-            throw err;
-        }
-    }
-
-    async findById(id: ID): Promise<TransactionDto | null> {
-        try {
-  
-            const TransactionModel = await this.repository.findById(id);
-
-            if (!TransactionModel || !Object.keys(TransactionModel).length) {
-                return null;
-            }
-
-            const resDto: TransactionDto 
-                = this.dataModelFactory.convertModelToDto(TransactionModel);
 
             return resDto;
         } catch (err) {
@@ -80,7 +62,7 @@ export class TransactionsService {
     async findMany(criteria: ICriteria) {
     // Promise<IFindDtosResult<TransactionDto>> {
         try {
-            const findModelsResult: IFindModelsResult<Transaction> 
+            const findModelsResult: IFindModelsResult<TransactionModel> 
                 = await this.repository.findMany(criteria);
 
             if (!findModelsResult || 
@@ -91,7 +73,7 @@ export class TransactionsService {
                 return defaultResult;
             } 
             
-            const { data: entities, total }: IFindModelsResult<Transaction> 
+            const { data: entities, total }: IFindModelsResult<TransactionModel> 
                 = findModelsResult;
 
             // Convert Entity to Dto
@@ -110,7 +92,7 @@ export class TransactionsService {
     async countByCity(criteria: ICriteria) {
         // const { filters } = criteria;
 
-        const findModelsResult: IFindModelsResult<Transaction> 
+        const findModelsResult: IFindModelsResult<TransactionModel> 
                 = await this.repository.findMany(criteria);
 
         const identityKey = 'city';

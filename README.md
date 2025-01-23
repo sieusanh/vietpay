@@ -40,3 +40,9 @@ nodejs dirname as root path
 nodejs project root dir src
 https://stackoverflow.com/questions/10265798/determine-project-root-from-a-running-node-js-application
 
+
+
+Check usability:
+
+BaseMongooseModule
+

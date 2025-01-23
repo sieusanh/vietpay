@@ -4,7 +4,7 @@ import { RegistryDto } from './authen.dto';
 import { Account } from './accounts.entity';
 import { AccountsService } from 'modules/accounts/accounts.service';
 import { DataEntityFactory } from 'modules/base';
-import { ID } from 'src/common/constant';
+import { CODE } from 'common/constant';
 import { ICriteria, ISelect, IFilter, ErrorMessages } from 'src/common/constant';
 import { IFindEntitiesResult, IFindDtosResult } from 'modules/base';
 import { ISignin, IAccessInfo, IAccountInfo } from './accounts.interface';

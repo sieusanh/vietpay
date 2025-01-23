@@ -27,7 +27,7 @@ import { Roles } from 'common/decorator';
 // @ApiBearerAuth()
 @UseGuards(RolesGuard)
 @ApiTags(MODULE_INFO.NAME)
-@Roles([ROLES.MEMBER])
+@Roles(ROLES.MEMBER)
 export class TransactionsController {
 
     // private readonly logger = new Logger(TransactionsController.name);
@@ -41,7 +41,7 @@ export class TransactionsController {
     }   
 
     @Post()
-    @Roles([ROLES.ADMIN])
+    @Roles(ROLES.ADMIN)
     // @Header('Cache-Control', 'none')
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: `Create` })

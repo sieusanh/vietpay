@@ -1,6 +1,6 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 // import { HydratedDocument } from 'mongoose';
-import { ID, STATUS } from 'src/common';
+import { CODE, STATUS } from 'src/common';
 
 // export type CatDocument = HydratedDocument<Cat>;
 
@@ -12,7 +12,7 @@ export class BaseModel {
         unique: true,
         // index: true,
     })
-    id: ID;
+    code: CODE;
 
     @Prop({ 
         type: Number,

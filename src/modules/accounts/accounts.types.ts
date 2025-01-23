@@ -1,11 +1,6 @@
 import { CODE } from 'common/constant';
 import { IBaseInfo } from 'modules/base';
 
-export interface IAccountInfo {
-    username: string;
-    role_code?: CODE;
-}
-
 export interface IAccount extends IBaseInfo {
     code: CODE;
     username: string;

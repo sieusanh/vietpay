@@ -1,5 +1,5 @@
 import { BaseModel } from './base.mongoose.model';
-import { ID } from 'src/common';
+import { CODE } from 'src/common';
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Model as MongooseModel, Connection, 
@@ -282,15 +282,15 @@ export class BaseMongooseRepository<Model extends BaseModel>
         options: QueryOptions<TRawDocType> & { lean: true }
     */
 
-    findById(id: ID): Promise<Model> {
-        const options: RootFilterQuery<Model> = { code: id };
+    // findOne(code: CODE): Promise<Model> {
+    //     const options: RootFilterQuery<Model> = { code };
 
-        const result = this.model        
-            .findOne(options)
-            .then(res => res)
-            .catch(err => err);
-        return result;
-    }
+    //     const result = this.model        
+    //         .findOne(options)
+    //         .then(res => res)
+    //         .catch(err => err);
+    //     return result;
+    // }
 
     // findOne(options: FindOneOptions<Model>): Promise<Model> {
 

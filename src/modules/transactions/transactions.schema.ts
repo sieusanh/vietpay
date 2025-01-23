@@ -1,11 +1,11 @@
 import { SchemaFactory } from '@nestjs/mongoose';
-import { Transaction } from './transactions.model';
+import { TransactionModel } from './transactions.model';
 
-export const Transactionschema = SchemaFactory.createForClass(Transaction);
+export const Transactionschema = SchemaFactory.createForClass(TransactionModel);
 
-Transactionschema.pre<Transaction>('save', async function (next) {
+Transactionschema.pre<TransactionModel>('save', async function (next) {
     // this.constructor.findOne();
-    const doc = Transaction;
+    const doc = TransactionModel;
     const a = 
     // const count = await doc.fin
     

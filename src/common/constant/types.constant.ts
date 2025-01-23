@@ -18,4 +18,6 @@ export enum ROLES {
     ADMIN = 'ADMIN'
 }
 
-
+export const METADATA_KEYS = {
+    ROLES: 'roles'
+}

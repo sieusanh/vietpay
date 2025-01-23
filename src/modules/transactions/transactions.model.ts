@@ -1,13 +1,13 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { BaseModel } from '../base';
-import { ID, GENDERS, ROLES } from 'src/common';
+import { CODE, GENDERS, ROLES } from 'src/common';
 
 @Schema({ 
     // _id: false, 
     timestamps: true, 
     collection: 'transactions',
 })
-export class Transaction extends BaseModel {
+export class TransactionModel extends BaseModel {
 
     // @Prop({
     //     unique: true,

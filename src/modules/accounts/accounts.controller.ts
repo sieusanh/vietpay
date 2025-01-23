@@ -3,9 +3,8 @@ import {
     Param, HttpCode, HttpException, HttpStatus, NotFoundException
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
-import { AccountDto, SignInDto, RegistryDto } from './accounts.dto';
-import { MODULE_INFO, MODULE_PATH_PARAMS, REGISTER_BODY_EXAMPLE } from './accounts.constant';
-import { IAccessInfo } from './accounts.types';
+import { AccountDto } from './accounts.dto';
+import { MODULE_INFO, ENDPOINTS } from './accounts.constant';
 import { ApiTags, ApiBearerAuth, ApiHeader, ApiBody, ApiOperation } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
 import { RolesGuard, AuthGuard } from 'common/guards';
@@ -27,74 +26,7 @@ export class AccountsController {
         protected accountService: AccountsService,
         private queryParser: QueryParser
 
-        // protected accountDto: AccountDto, 
-        // protected account: Account,
-    ) {
-    }
-
-    @Post(MODULE_PATH_PARAMS.SIGNIN)
-    @HttpCode(HttpStatus.OK)
-    @ApiOperation({ summary: 'Account Login' })
-    @ApiBody({
-        description: '',
-        examples: {
-            'Case default': {
-                value: {
-                    phone: '0902083164',
-                    password: 'Abc@123'
-                }
-            }
-        }
-    })
-    // @ApiBody({ type: SignInDto })
-    async signIn(@Body() signInDto: SignInDto): Promise<IAccessInfo> {
-        try {
-            const res: IAccessInfo = await this.accountService.signIn(signInDto);
-            return res;
-        } catch (err) {
-            throw new HttpException(
-                HttpErrorMessages.UNAUTHORIZED,
-                HttpStatus.UNAUTHORIZED
-            );
-        }
-    }
-
-    @Post(MODULE_PATH_PARAMS.REGISTER)
-    @HttpCode(HttpStatus.CREATED)
-    @ApiOperation({ summary: 'User account registration' })
-    @ApiBody({
-        // schema: {
-        //     // $ref: getSchemaPath(RegistryDto)
-        //     $ref: getSchemaPath(AccountDto)
-        // },
-        description: '',
-        examples: {
-            'Case default': {
-                value: REGISTER_BODY_EXAMPLE
-            }
-        }
-    })
-    async register(@Body() registryDto: RegistryDto): Promise<void> {
-        try {
-            await this.accountService.register(registryDto);
-
-        } catch (err) {
-
-            const { message, status } = err;
-            let errMess: string = HttpErrorMessages.CREATE;
-            let errStatusCode: number = HttpStatus.INTERNAL_SERVER_ERROR;
-
-            if (message && status) {
-                errMess = message;
-                errStatusCode = status;
-            }
-
-            throw new HttpException(
-                errMess,
-                errStatusCode
-            );
-        }
-    }
+    ) { }
 
     @Post()
     // @Roles([ROLES.ADMIN])
@@ -150,7 +82,7 @@ export class AccountsController {
     ) {
         try {
 
-            const data = await this.accountService.findById(id);
+            const data = await this.accountService.findOne(id);
 
             if (!data) {
                 throw new NotFoundException(

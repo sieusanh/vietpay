@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, 
     ObjectLiteral, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { STATUS, ID } from 'src/common';
+import { STATUS, CODE } from 'src/common';
 
 export class BaseEntity 
     implements ObjectLiteral {
@@ -15,7 +15,7 @@ export class BaseEntity
         nullable: false,
         name: 'key'
     })
-    id: ID;
+    code: CODE;
 
     @Column({ 
         // type: 'smallint',
