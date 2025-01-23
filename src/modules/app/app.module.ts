@@ -1,5 +1,17 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { APP_FILTER, APP_PIPE, APP_GUARD, APP_INTERCEPTOR, RouterModule, Routes } from '@nestjs/core';
+import {
+    Module,
+    // NestModule,
+    // MiddlewareConsumer,
+    ClassSerializerInterceptor,
+} from '@nestjs/common';
+import {
+    APP_FILTER,
+    // APP_PIPE,
+    APP_GUARD,
+    APP_INTERCEPTOR,
+    // RouterModule,
+    // Routes,
+} from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AccountsModule } from 'modules/accounts/accounts.module';
@@ -7,16 +19,25 @@ import { TransactionsModule } from 'modules/transactions/transactions.module';
 import { LoggerModule } from 'common/log/module.log';
 // import * as cors from 'cors';
 // import helmet from 'helmet';
-import { AllExceptionsFilter, HttpExceptionFilter } from 'src/common/exception';
-import { ValidationPipe, RolesGuard, 
-    LoggingInterceptor, 
-    AuthGuard 
-} from 'src/common';
+import {
+    AllExceptionsFilter,
+    // HttpExceptionFilter,
+} from 'common/exception';
+import {
+    // ValidationPipe,
+    AuthGuard,
+} from 'common/guards';
+import { LoggingInterceptor } from 'common/interceptors';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configuration, validate } from 'common/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ApiConfigService, ITypeOrmDatasource, IMongooseDatasource, CONFIG_KEYS } from 'common/config';
+import {
+    ApiConfigService,
+    ITypeOrmDatasource,
+    IMongooseDatasource,
+    CONFIG_KEYS,
+} from 'common/config';
 
 @Module({
     imports: [
@@ -25,47 +46,54 @@ import { ApiConfigService, ITypeOrmDatasource, IMongooseDatasource, CONFIG_KEYS 
         TransactionsModule,
         TypeOrmModule.forRootAsync({
             // imports: [ConfigModule],
-            useFactory: (config: ConfigService) => 
-                config.get<ITypeOrmDatasource>(CONFIG_KEYS.TYPEORM_DATASOURCE, { infer: true }),
-            inject: [ConfigService]
+            useFactory: (config: ConfigService) =>
+                config.get<ITypeOrmDatasource>(
+                    CONFIG_KEYS.TYPEORM_DATASOURCE,
+                    {
+                        infer: true,
+                    },
+                ),
+            inject: [ConfigService],
         }),
         MongooseModule.forRootAsync({
-            useFactory: (config: ConfigService) => 
-                config.get<IMongooseDatasource>(CONFIG_KEYS.MONGOOSE_DATASOURCE, { infer: true }),
-            inject: [ConfigService]
+            useFactory: (config: ConfigService) =>
+                config.get<IMongooseDatasource>(
+                    CONFIG_KEYS.MONGOOSE_DATASOURCE,
+                    {
+                        infer: true,
+                    },
+                ),
+            inject: [ConfigService],
         }),
         ConfigModule.forRoot({
             isGlobal: true,
             validate,
             load: [configuration],
-            cache: true
+            cache: true,
         }),
-        
     ],
-    controllers: [
-        AppController
-    ],
+    controllers: [AppController],
     providers: [
         {
-          provide: APP_FILTER,
-          useClass: AllExceptionsFilter, 
+            provide: APP_FILTER,
+            useClass: AllExceptionsFilter,
         },
-        {
-          provide: APP_PIPE,
-          useClass: ValidationPipe,
-        },
+        // {
+        //     provide: APP_PIPE,
+        //     useClass: ValidationPipe,
+        // },
         {
             provide: APP_GUARD,
             useClass: AuthGuard,
         },
         {
-          provide: APP_GUARD,
-          useClass: RolesGuard,
+            provide: APP_INTERCEPTOR,
+            useClass: LoggingInterceptor,
         },
-        // {
-        //   provide: APP_INTERCEPTOR,
-        //   useClass: LoggingInterceptor
-        // },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ClassSerializerInterceptor,
+        },
         AppService,
         ApiConfigService,
     ],

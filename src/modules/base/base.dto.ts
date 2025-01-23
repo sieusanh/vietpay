@@ -3,14 +3,13 @@ import { CODE } from 'src/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseDto {
-    
     @IsString()
     @IsOptional()
     @ApiProperty({
-        type: 'string'
+        type: 'string',
     })
     code: CODE = '';
-    
+
     // @IsInt()
     // @IsOptional()
     // @IsEnum(STATUS)
@@ -36,4 +35,9 @@ export class BaseDto {
     @IsOptional()
     @ApiProperty()
     updatedBy: string = '';
-}   
+}
+
+export interface BaseResponseDataDto<T> {
+    total: number;
+    data: Array<T>;
+}

@@ -1,76 +1,83 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+    Injectable,
+    UnauthorizedException,
+    ConflictException,
+} from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { RegistryDto } from './authen.dto';
-import { Account } from './accounts.entity';
+import { AccountEntity } from './accounts.entity';
 import { AccountsService } from 'modules/accounts/accounts.service';
 import { DataEntityFactory } from 'modules/base';
 import { CODE } from 'common/constant';
-import { ICriteria, ISelect, IFilter, ErrorMessages } from 'src/common/constant';
+import {
+    ICriteria,
+    ISelect,
+    IFilter,
+    ErrorMessages,
+} from 'common/constant';
 import { IFindEntitiesResult, IFindDtosResult } from 'modules/base';
-import { ISignin, IAccessInfo, IAccountInfo } from './accounts.interface';
+import { IAccount } from 'modules/accounts/accounts.types';
 import { IRegistry, ISignIn } from './authen.types';
 
 @Injectable()
 export class AuthenService {
-
     constructor(
         private jwtService: JwtService,
 
         protected accountsService: AccountsService,
 
-        // protected dataEntityFactory: 
+        // protected dataEntityFactory:
         //     DataEntityFactory<RegistryDto, Account>,
-
-    ) { }
+    ) {}
 
     async register(registryBody: IRegistry): Promise<void> {
-
         try {
-            // 
+            //
             const { username, phone, email } = registryBody;
-    
+
             // Check if account existed
             const filters: IFilter[] = [
                 { username },
-                { email }, 
-                { phone } 
+                { email },
+                { phone },
             ];
             const select: ISelect = ['id'];
-    
-            const accountEntity: RegistryDto | null
-                = await this.accountsService.findOne(filters, select);
-                // = await this.findOne(findAccountOptions);
-                    
-            console.log('======================== account ', 
-                account)
+
+            const account: IAccount | null =
+                await this.accountsService.findOne(filters, select);
+            // = await this.findOne(findAccountOptions);
+
+            console.log('======================== account ', account);
 
             // A salted one-way hash algorithm
-            
+
             if (account) {
-                // throw new BadRequestException(`Account ${ErrorMessages.EXISTED_POSTFIX}`);
-                // throw new BadRequestException(`Account ${ErrorMessages.EXISTED_POSTFIX}`);
-                throw new ConflictException(`Account ${ErrorMessages.EXISTED_POSTFIX}`);
+                throw new ConflictException(
+                    `Account ${ErrorMessages.EXISTED_POSTFIX}`,
+                );
             }
-            
+
             // // Insert account
             await this.insertOne(RegistryDto);
-            
         } catch (err) {
-            console.log('================== UserAuthService register err', err)
+            console.log(
+                '================== UserAuthService register err',
+                err,
+            );
             throw err;
         }
     }
 
     async signIn(signInBody: ISignIn): Promise<IAccessInfo> {
         try {
-
-            const { 
-                username = '', 
-                // email = '', 
-                phone, password: pass 
+            const {
+                username = '',
+                // email = '',
+                phone,
+                password: pass,
             } = signInDto;
 
-            // Account        
+            // Account
             const filters: IFilter[] = [];
 
             if (username) {
@@ -84,10 +91,12 @@ export class AuthenService {
             if (phone) {
                 filters.push({ phone });
             }
-            
-            const account = await this.findOne(filters);
-            console.log('======================== UserAuthService signIn account ', 
-                account)
+
+            const account = await this.accountsService.findOne(filters);
+            console.log(
+                '======================== UserAuthService signIn account ',
+                account,
+            );
             if (!account) {
                 throw new UnauthorizedException();
                 // NotFoundException
@@ -100,18 +109,20 @@ export class AuthenService {
             }
 
             // Generate access token
-            const jwtPayload: IAccountInfo 
-                = {
+            const jwtPayload: IAccountInfo = {
                 // accountId
-                username, roleId
-            }
+                username,
+                roleId,
+            };
 
             const jwtSignOption: JwtSignOptions = {
-                expiresIn: '1h'
-            }
+                expiresIn: '1h',
+            };
 
-            const accessToken: string 
-                = await this.jwtService.signAsync(jwtPayload, jwtSignOption);
+            const accessToken: string = await this.jwtService.signAsync(
+                jwtPayload,
+                jwtSignOption,
+            );
 
             const accessInfo: IAccessInfo = { accessToken };
 
@@ -120,5 +131,4 @@ export class AuthenService {
             throw err;
         }
     }
-
 }

@@ -1,14 +1,12 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { BaseModel } from '../base';
-import { CODE, GENDERS, ROLES } from 'src/common';
 
-@Schema({ 
-    // _id: false, 
-    timestamps: true, 
+@Schema({
+    // _id: false,
+    timestamps: true,
     collection: 'transactions',
 })
 export class TransactionModel extends BaseModel {
-
     // @Prop({
     //     unique: true,
     //     required: true,
@@ -24,74 +22,32 @@ export class TransactionModel extends BaseModel {
 
     @Prop({
         required: false,
-        type: 'string'
+        type: 'string',
     })
     type?: string = '';
 
     @Prop({
         required: false,
         type: 'string',
-        match: /^[+ 0-9]{8,18}$/
+        match: /^[+ 0-9]{8,18}$/,
     })
     phone?: string = '';
 
     @Prop({
-        required: true,
-        type: 'string'
-    })
-    city: string = '';
-
-    @Prop({
-        null: false,
-        type: 'string'
-    })
-    address: string = '';
-    
-    @Prop({
-        null: false,
-        type: 'string'
-    })
-    distance?: string = '';
-
-    @Prop({
-        type: [String]
+        type: [String],
     })
     photos?: Array<string>;
 
     @Prop({
         null: false,
-        type: 'string'
-    })
-    title?: string = '';
-
-    @Prop({
-        null: false,
-        type: 'string'
-    })
-    desc: string = '';
-
-    @Prop({
-        null: false,
         type: 'number',
         min: 0,
-        max: 5
+        max: 5,
     })
     rating: number;
 
     @Prop({
-        type: [String]
+        type: [String],
     })
     rooms: Array<string>;
-
-    @Prop({
-        null: false,
-        type: 'number'
-    })
-    cheapestPrice: number;
-
-    @Prop({
-        type: 'boolean'
-    })
-    featured: boolean = false;
 }
-

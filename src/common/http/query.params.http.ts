@@ -1,35 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class QueryParams {
-
-    where?: any
-
+    // key, value is viewed as or if value have prefix "|"
     @ApiProperty({
-        default: ''
+        default: '',
     })
-    fields?: string;
-
-    // [key]: unknown;
+    select?: string;
 
     @ApiProperty({
-        default: 0
+        default: 0,
     })
     offset?: number = 0;
-    
+
     @ApiProperty({
-        default: 20
+        default: 20,
     })
     limit?: number = 20;
 
-    @ApiProperty({
-        // default: 20
-        required: false
-    })
-    sort_by?: string;
-
+    // GET /ccadmin/v1/products?sort=id:desc,name:asc
     @ApiProperty({
         required: false,
-        default: 'asc'
     })
-    sort_direction?: string;
+    sort?: string;
+
+    @ApiProperty({})
+    from_time?: string;
+
+    @ApiProperty({})
+    to_time?: string;
+
+    @ApiProperty({})
+    populate?: string;
 }

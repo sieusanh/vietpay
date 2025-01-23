@@ -57,7 +57,3 @@ export class AccountDto extends BaseDto {
     lastLoginAt?: Date = new Date();
 
 }
-
-export class UpdateAccountDto {
-    
-}

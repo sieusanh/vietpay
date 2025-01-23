@@ -2,11 +2,9 @@ import { BaseModel, BaseDto } from 'modules/base';
 
 export class DataModelFactory<
     Dto extends BaseDto,
-    Model extends BaseModel
+    Model extends BaseModel,
 > {
-
     convertDtoToModel(dto: Dto): Model {
-
         const model: Model = {} as Model;
 
         for (const [key, val] of Object.entries(dto)) {
@@ -17,7 +15,6 @@ export class DataModelFactory<
     }
 
     convertModelToDto(Model: Model): Dto {
-
         const dto: Dto = {} as Dto;
 
         for (const [key, val] of Object.entries(Model)) {
@@ -28,7 +25,6 @@ export class DataModelFactory<
     }
 
     convertModelsToDtos(models: Model[]): Dto[] {
-
         const dtos: Dto[] = [] as Dto[];
 
         for (const model of models) {

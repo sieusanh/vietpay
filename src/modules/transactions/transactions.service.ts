@@ -9,12 +9,13 @@ import { ConsoleService } from 'common/log';
 
 @Injectable()
 export class TransactionsService {
-
     constructor(
         protected repository: TransactionsRepository,
 
-        protected dataModelFactory: 
-            DataModelFactory<TransactionDto, TransactionModel>,
+        protected dataModelFactory: DataModelFactory<
+            TransactionDto,
+            TransactionModel
+        >,
         private consoleService: ConsoleService,
     ) {
         this.consoleService.setContext(TransactionsService.name);
@@ -22,14 +23,14 @@ export class TransactionsService {
 
     async insertOne(TransactionDto: TransactionDto) {
         try {
-            const TransactionEntity: TransactionModel
-                = this.dataModelFactory.convertDtoToModel(TransactionDto);
+            const transactionEntity: TransactionModel =
+                this.dataModelFactory.convertDtoToModel(TransactionDto);
 
-            const newModel 
-                = await this.repository.insertOne(TransactionEntity);
+            const newModel =
+                await this.repository.insertOne(transactionEntity);
 
-            const resDto: TransactionDto 
-                = this.dataModelFactory.convertModelToDto(newModel);
+            const resDto: TransactionDto =
+                this.dataModelFactory.convertModelToDto(newModel);
 
             return resDto;
         } catch (err) {
@@ -37,52 +38,61 @@ export class TransactionsService {
         }
     }
 
-    async findOne(filters: IFilter[], select?: ISelect): 
-        Promise<TransactionDto | null> {
+    async findOne(
+        filters: IFilter[],
+        select?: ISelect,
+    ): Promise<TransactionDto | null> {
         try {
-  
-            const TransactionModel = await this.repository.findOne(
-                { select, filters }
-            );
-            
-            if (!TransactionModel || !Object.keys(TransactionModel).length) {
+            const TransactionModel = await this.repository.findOne({
+                select,
+                filters,
+            });
+
+            if (
+                !TransactionModel ||
+                !Object.keys(TransactionModel).length
+            ) {
                 return null;
             }
 
-            const resDto: TransactionDto 
-                = this.dataModelFactory.convertModelToDto(TransactionModel);
-            
+            const resDto: TransactionDto =
+                this.dataModelFactory.convertModelToDto(TransactionModel);
+
             return resDto;
-    
         } catch (err) {
             throw err;
         }
     }
 
     async findMany(criteria: ICriteria) {
-    // Promise<IFindDtosResult<TransactionDto>> {
+        // Promise<IFindDtosResult<TransactionDto>> {
         try {
-            const findModelsResult: IFindModelsResult<TransactionModel> 
-                = await this.repository.findMany(criteria);
+            const findModelsResult: IFindModelsResult<TransactionModel> =
+                await this.repository.findMany(criteria);
 
-            if (!findModelsResult || 
-                !findModelsResult.data.length || 
-                !findModelsResult.total) {
-
+            if (
+                !findModelsResult ||
+                !findModelsResult.data.length ||
+                !findModelsResult.total
+            ) {
                 const defaultResult = { data: [], total: 0 };
                 return defaultResult;
-            } 
-            
-            const { data: entities, total }: IFindModelsResult<TransactionModel> 
-                = findModelsResult;
+            }
+
+            const {
+                data: entities,
+                total,
+            }: IFindModelsResult<TransactionModel> = findModelsResult;
 
             // Convert Entity to Dto
-            const resDtos: TransactionDto[] 
-                = this.dataModelFactory.convertModelsToDtos(entities);
+            const resDtos: TransactionDto[] =
+                this.dataModelFactory.convertModelsToDtos(entities);
 
-            const findManyDtosResult: IFindDtosResult<TransactionDto> 
-                = { data: resDtos, total };
-            
+            const findManyDtosResult: IFindDtosResult<TransactionDto> = {
+                data: resDtos,
+                total,
+            };
+
             return findManyDtosResult;
         } catch (err) {
             throw err;
@@ -92,19 +102,19 @@ export class TransactionsService {
     async countByCity(criteria: ICriteria) {
         // const { filters } = criteria;
 
-        const findModelsResult: IFindModelsResult<TransactionModel> 
-                = await this.repository.findMany(criteria);
+        const findModelsResult: IFindModelsResult<TransactionModel> =
+            await this.repository.findMany(criteria);
 
         const identityKey = 'city';
         await this.repository.groupBy(criteria, identityKey);
     }
 
     // async updateById(
-    //     id: ID, 
+    //     id: ID,
     //     TransactionDto: TransactionDto
     // ) {
     //     try {
-    //         const model: Transaction 
+    //         const model: Transaction
     //         = this.dataModelFactory.convertDtoToModel(TransactionDto);
 
     //         await this.repository.updateById(id, model);
@@ -116,7 +126,7 @@ export class TransactionsService {
 
     // async deleteById(id: ID) {
     //     try {
-            
+
     //         await this.repository.deleteById(id);
 
     //     } catch (err) {
@@ -124,10 +134,7 @@ export class TransactionsService {
     //     }
     // }
 
-
-
-
-/*
+    /*
     async createMany(entities: Dto[]): Promise<void> {
         const func = async function () {
             await this.queryRunnerFactory.save(entities[0]);
@@ -151,5 +158,4 @@ export class TransactionsService {
         return result; 
     }
 */
-
 }

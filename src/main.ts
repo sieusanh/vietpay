@@ -1,6 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from 'src/modules';
-import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
+import {
+    SwaggerModule,
+    DocumentBuilder,
+    SwaggerDocumentOptions,
+} from '@nestjs/swagger';
 import { LoggerMiddleware } from './common/middlewares';
 // import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
@@ -8,7 +12,7 @@ import { AccountDto } from 'modules/accounts';
 import { QueryParams } from 'common/http';
 import * as cors from 'cors';
 import helmet from 'helmet';
-import { ConsoleService } from "common/log";
+import { ConsoleService } from 'common/log';
 import { IApp } from 'common/config';
 
 async function bootstrap() {
@@ -22,8 +26,8 @@ async function bootstrap() {
     });
 
     // Here are for functional-based LoggerMiddleware
-    app.use(cors())
-    app.use(helmet())
+    app.use(cors());
+    app.use(helmet());
     app.use(LoggerMiddleware);
     app.setGlobalPrefix('api');
     // app.useLogger(app.get(LogService));
@@ -37,17 +41,22 @@ async function bootstrap() {
 
     const swaggerOptions: SwaggerDocumentOptions = {
         extraModels: [QueryParams, AccountDto],
-    }
-    const document = () => SwaggerModule.createDocument(
-        app, swaggerConfig, swaggerOptions);
-    
+        //   autoTagControllers: true,
+    };
+    const document = () =>
+        SwaggerModule.createDocument(app, swaggerConfig, swaggerOptions);
+
     SwaggerModule.setup('docs', app, document, {
-        swaggerOptions: {   
-            docExpansion: 'none'
-        }
+        swaggerOptions: {
+            docExpansion: 'none',
+        },
     });
 
     process.on('unhandledRejection', (error, promise) => {
+        console.log(
+            '====================== unhandledRejection promise ',
+            promise,
+        );
         throw error;
     });
 
@@ -68,15 +77,14 @@ async function bootstrap() {
     const logService = await app.resolve(ConsoleService);
     app.useLogger(logService);
 
-    const configService = app.get(ConfigService);   
+    const configService = app.get(ConfigService);
     // const appPort = configService.get<string>('app.port');
     const appConfig = configService.get<IApp>('app');
     const appPort = appConfig?.port;
 
-    await app.listen(appPort).catch(err => {
+    await app.listen(appPort).catch((err) => {
         console.log('Server Error: ', err);
     });
-
 }
 
 bootstrap();

@@ -1,42 +1,25 @@
-
 export type ISelect = string[];
 
 export enum FILTER_OPERATOR {
-    EQUALS = 'eq',
-    IN = 'in',
-    CONTAINS = 'contains'
+    EQUALS = 'EQUALS',
+    IN = 'IN',
+    CONTAINS = 'CONTAINS',
 }
 
-export type FilterOperator 
-    = FILTER_OPERATOR.EQUALS 
-    | FILTER_OPERATOR.IN 
+export type FilterOperator =
+    | FILTER_OPERATOR.EQUALS
+    | FILTER_OPERATOR.IN
     | FILTER_OPERATOR.CONTAINS;
 
-// export interface IFilter {
-//     field: string;
-//     operator: FilterOperator;
-//     value: unknown;
-//     [key: string]: unknown;
-// }
+export interface IFilterAnd {
+    [field: string]: unknown;
+}
 
-interface IRepositoryFilter {
+export interface IFilterAll {
     field: string;
     operator: FilterOperator;
     value: unknown;
 }
-
-interface IPair {
-    [key: string]: unknown;
-}
-
-// export type IFilter = IRepositoryFilter | IPair;
-// export type IFilter = IRepositoryFilter;
-
-// export interface ICriteria {
-//     select: ISelect;
-//     filters: IFilter[];
-// }
-
 
 // type QueryPairs<Entity extends BaseEntity> = {
 //     [key in keyof Entity]: number | string | boolean | null;
@@ -44,24 +27,30 @@ interface IPair {
 
 export enum SortDirection {
     ASC = 'asc',
-    DESC = 'desc'
-}
-  
-export interface ISort {
-    column: string;
-    direction?: SortDirection;
+    DESC = 'desc',
 }
 
-export interface IFilter {
-    [field: string]: unknown;
-};
+export interface ISort {
+    column: string;
+    direction?: SortDirection.ASC | SortDirection.DESC;
+}
+
+export type IFilter = IFilterAnd | IFilterAll;
+
+export interface IPopulateOptions {
+    path: string;
+    select: string;
+}
 
 export interface ICriteria {
     select?: ISelect;
     filters?: IFilter[];
+    populateOptions?: IPopulateOptions[];
+}
+
+export interface IFindManyCriteria extends ICriteria {
     sort?: ISort;
     sorts?: ISort[];
     offset?: number;
     limit?: number;
 }
-

@@ -1,4 +1,4 @@
-import { CODE } from 'src/common';
+import { CODE } from 'common/constant';
 
 export class IRegistry {
     username: string;
@@ -8,7 +8,7 @@ export class IRegistry {
     full_name: string;
     avatar?: string;
     gender?: string;
-    role_code?;
+    role_code?: CODE;
     last_login_at?: Date;
 }
 

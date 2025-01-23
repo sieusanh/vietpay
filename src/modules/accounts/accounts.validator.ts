@@ -42,7 +42,7 @@
 //          * Maximum 20 characters
 //          * NOT CONTAINING SPECIAL CHARACTERS
 //          * Available
-//          * 
+//          *
 //          */
 //         const emailPattern = /^[a-zA-Z0-9 @]{8,20}$/;
 //         if (!emailPattern.test(email.trim())) {
@@ -56,7 +56,7 @@
 
 //         /**
 //          * Check valid password
-//          * 
+//          *
 //          * Minimum 8 characters
 //          * At least one number
 //          * At least one non-alphabetic character

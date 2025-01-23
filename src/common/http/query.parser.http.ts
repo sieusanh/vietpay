@@ -2,33 +2,30 @@
 // import { QueryRunnerService } from './query-runner.factory';
 import { QueryParams } from './query.params.http';
 import { FindOneOptions } from 'typeorm';
-import queryString from 'querystring';
-
 import { ICriteria, IFilter, ISelect } from 'src/common/constant';
 
 // @Global()
 // @Module({
 //     exports: [
-//         EntityListenerService, 
+//         EntityListenerService,
 //         QueryRunnerService
 //     ]
 // })
-// export class ModuleFactory { 
+// export class ModuleFactory {
 
 // }
 
 export class QueryParser {
     parseFindOneQuery(queryParams: QueryParams): FindOneOptions {
         const findOneOptions: FindOneOptions = {};
-        console.log('=============** queryParams ', queryParams)
-        console.log('=============** findOneOptions ', findOneOptions)
+        console.log('=============** queryParams ', queryParams);
+        console.log('=============** findOneOptions ', findOneOptions);
 
         return findOneOptions;
     }
 
     parseFindManyQuery(queryParams: QueryParams): ICriteria {
-
-        const { offset, limit, fields, ...others } = queryParams;
+        const { offset, limit, select, ...others } = queryParams;
 
         const criteria: ICriteria = {};
         const filters: IFilter[] = [];
@@ -51,13 +48,12 @@ export class QueryParser {
         }
 
         if (fields) {
-            fields.split(',').forEach(
-                (field: string) => select.push(field)
-            ); 
+            fields
+                .split(',')
+                .forEach((field: string) => select.push(field));
             Object.assign(criteria, fields);
         }
 
         return criteria;
     }
-
 }

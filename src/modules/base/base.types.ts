@@ -7,6 +7,9 @@ export interface IBaseInfo {
     updatedAt: Date;
     createdBy: string;
     updatedBy: string;
-}   
+}
 
-
+export interface IResponseData<T> {
+    total: number;
+    data: Array<T>;
+}

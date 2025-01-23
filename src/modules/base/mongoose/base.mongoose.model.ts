@@ -1,63 +1,61 @@
 import { Prop, Schema } from '@nestjs/mongoose';
-// import { HydratedDocument } from 'mongoose';
 import { CODE, STATUS } from 'src/common';
-
-// export type CatDocument = HydratedDocument<Cat>;
 
 @Schema({ timestamps: true, _id: false })
 export class BaseModel {
-
     @Prop({
-        // required: true,
+        required: true,
         unique: true,
         // index: true,
+        immutable: true,
     })
     code: CODE;
 
-    @Prop({ 
+    @Prop({
         type: Number,
         enum: STATUS,
-        default: STATUS.ACTIVE
+        default: STATUS.ACTIVE,
     })
     status: number;
     // status: STATUS;
 
-    @Prop({ 
+    @Prop({
         type: 'string',
-        default: ''
+        default: '',
+        immutable: true,
     })
     createdBy: string;
 
-    @Prop({ 
+    @Prop({
         type: 'string',
-        default: ''
+        default: '',
     })
     updatedBy: string;
 
-    @Prop({ 
-        type: Date, 
-        required: false 
+    @Prop({
+        type: Date,
+        required: false,
+        immutable: true,
     })
     createdAt: Date;
 
-    @Prop({ 
-        type: Date, 
-        required: false 
+    @Prop({
+        type: Date,
+        required: false,
     })
     updatedAt: Date;
 
     // timestamp
 
-    // @Prop({ 
+    // @Prop({
     //     type: 'string',
     //     default: ''
     // })
     // createdAt: any;
 
-    // @Prop({ 
+    // @Prop({
     //     type: 'string',
     //     default: ''
     // })
     // updatedAt: any;
 }
-

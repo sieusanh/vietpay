@@ -1,12 +1,9 @@
-
 export const MODULE_INFO = {
     NAME: 'Accounts',
     CONTROLLER: 'accounts',
-}
+};
 
-export const ENDPOINTS = {
-    
-}
+export const ENDPOINTS = {};
 
 export const REGISTER_BODY_EXAMPLE = {
     username: 'user1',
@@ -17,4 +14,4 @@ export const REGISTER_BODY_EXAMPLE = {
     avatar: null,
     gender: 'MALE',
     roleId: 'MEMBER',
-}
+};

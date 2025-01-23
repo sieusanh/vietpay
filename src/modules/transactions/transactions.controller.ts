@@ -1,44 +1,62 @@
-import { 
-    Controller, Body, Query, Post, Get, 
-    Param, HttpCode, HttpException, 
-    HttpStatus, NotFoundException, 
-    BadRequestException, 
-    InternalServerErrorException,
-    UseGuards, Logger, 
-    ParseIntPipe
+import {
+    Controller,
+    Body,
+    Query,
+    Post,
+    Get,
+    Param,
+    HttpCode,
+    HttpException,
+    HttpStatus,
+    UseGuards,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { TransactionDto } from './transactions.dto';
-import { ApiTags, ApiBearerAuth, 
-    ApiHeader, ApiBody, ApiOperation 
+import {
+    ApiTags,
+    // ApiBearerAuth,
+    ApiHeader,
+    ApiBody,
+    ApiOperation,
 } from '@nestjs/swagger';
-import { RolesGuard, AuthGuard } from 'common/guards';
-import { HttpErrorMessages, ICriteria, IFilter, PATH_PARAMS, ROLES } from 'src/common/constant';
+import {
+    RolesGuard,
+    // AuthGuard
+} from 'common/guards';
+import {
+    HttpErrorMessages,
+    ICriteria,
+    IFilter,
+    // PATH_PARAMS,
+    ROLES,
+} from 'common/constant';
 import { QueryParams, QueryParser } from 'common/http';
-import { MODULE_INFO, MODULE_PATH_PARAMS, LOG_INFOS } from './transactions.constant';
+import {
+    MODULE_INFO,
+    MODULE_PATH_PARAMS,
+    LOG_INFOS,
+} from './transactions.constant';
 import { ConsoleService } from 'common/log';
 import { Roles } from 'common/decorator';
 
 @Controller(MODULE_INFO.CONTROLLER)
 @ApiHeader({
     name: 'X-MyHeader',
-    description: 'Custom header'
+    description: 'Custom header',
 })
 // @ApiBearerAuth()
 @UseGuards(RolesGuard)
 @ApiTags(MODULE_INFO.NAME)
 @Roles(ROLES.MEMBER)
 export class TransactionsController {
-
-    // private readonly logger = new Logger(TransactionsController.name);
-
     constructor(
         protected service: TransactionsService,
         private queryParser: QueryParser,
         private consoleService: ConsoleService,
-    ) { 
+    ) {
         this.consoleService.setContext(TransactionsController.name);
-    }   
+    }
 
     @Post()
     @Roles(ROLES.ADMIN)
@@ -62,10 +80,10 @@ export class TransactionsController {
                     rating: 1,
                     rooms: ['Room 1'],
                     cheapestPrice: 123,
-                    featured: false
-                }
-            }
-        }
+                    featured: false,
+                },
+            },
+        },
     })
     async create(
         @Body()
@@ -77,13 +95,19 @@ export class TransactionsController {
             //     .insertOne(transactionDto);
 
             // return result;
-            console.log('========================== created transaction ')
+            console.log(
+                '========================== created transactionDto ',
+                transactionDto,
+            );
             return true;
         } catch (err) {
-            console.log('================= TransactionsController create ', err)
+            console.log(
+                '================= TransactionsController create ',
+                err,
+            );
             throw new HttpException(
-                HttpErrorMessages.CREATE, 
-                HttpStatus.INTERNAL_SERVER_ERROR
+                HttpErrorMessages.CREATE,
+                HttpStatus.INTERNAL_SERVER_ERROR,
             );
         }
     }
@@ -120,44 +144,52 @@ export class TransactionsController {
     //         }
 
     //         throw new HttpException(
-    //             errMess, 
+    //             errMess,
     //             errStatusCode
     //         );
     //     }
     // }
-    
+
     @Get('pipe/:id')
-    findPipe(@Param('id', new ParseIntPipe({  errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id: number) {
-        console.log('================ id ', id)
-        console.log('================ typeof id ', typeof id)
-        return { prop: 'val' }
+    findPipe(
+        @Param(
+            'id',
+            new ParseIntPipe({
+                errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE,
+            }),
+        )
+        id: number,
+    ) {
+        console.log('================ id ', id);
+        console.log('================ typeof id ', typeof id);
+        return { prop: 'val' };
     }
 
     @Get('throw')
     // @HttpCode(HttpStatus.OK)
     findThrow() {
-        const err = new Error('abc123')
+        const err = new Error('abc123');
         // this.logger.log('WOAEIAWEIAW')
         const logInfo = {
             title: LOG_INFOS.INIT_TRANSACTION,
             data: {
-                transid: 'abc123'
-            }
-        }
+                transid: 'abc123',
+            },
+        };
         this.consoleService.printLog(logInfo);
 
-        console.log('=============== err ', err.name)
-        throw err
+        console.log('=============== err ', err.name);
+        throw err;
         // throw new HttpException(
-        //     'mess', 
+        //     'mess',
         //     500
         // );
         // throw new HttpException('Forbideen', HttpStatus.INTERNAL_SERVER_ERROR)
         // throw new InternalServerErrorException('Anc')
 
         // try {
-            // throw new HttpException('Forbideen', HttpStatus.FORBIDDEN)
-            // throw new Error('This is a mess')
+        // throw new HttpException('Forbideen', HttpStatus.FORBIDDEN)
+        // throw new Error('This is a mess')
         // } catch (error) {
         //     console.log('== err ', error)
         //     // throw new HttpException({
@@ -182,33 +214,30 @@ export class TransactionsController {
     @Get()
     @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: `findAll` })
-    async findMany(
-        @Query() queryParams: QueryParams,
-    ) {
+    async findMany(@Query() queryParams: QueryParams) {
         try {
-            const criteria: ICriteria 
-                = this.queryParser.parseFindManyQuery(queryParams);
+            const criteria: ICriteria =
+                this.queryParser.parseFindManyQuery(queryParams);
 
-            const result 
-                = await this.service.findMany(criteria);
+            const result = await this.service.findMany(criteria);
 
             return result;
         } catch (err) {
-            console.log('=============== TransactionsController findMany ', err);
+            console.log(
+                '=============== TransactionsController findMany ',
+                err,
+            );
             const { message, status } = err;
             let errMess: string = HttpErrorMessages.INTERNAL_SERVER_ERROR;
             let errStatusCode: number = HttpStatus.INTERNAL_SERVER_ERROR;
-    
+
             if (message && status) {
                 errMess = message;
                 errStatusCode = status;
             }
 
-            throw new HttpException(
-                errMess, 
-                errStatusCode
-            );
-            
+            throw new HttpException(errMess, errStatusCode);
+
             /*
                 throw new BadRequestException('Something bad happened', { 
                     cause: new Error(), 
@@ -228,9 +257,7 @@ export class TransactionsController {
     @Get(MODULE_PATH_PARAMS.COUNT_BY_CITY)
     @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: `countByCity` })
-    async countByCity(
-        @Query('cities') cities,
-    ) {
+    async countByCity(@Query('cities') cities) {
         try {
             const filters: IFilter[] = [];
 
@@ -240,24 +267,20 @@ export class TransactionsController {
             }
             const criteria: ICriteria = { filters };
 
-            const result 
-                = await this.service.countByCity(criteria);
+            const result = await this.service.countByCity(criteria);
 
             return result;
         } catch (err) {
             const { message, status } = err;
             let errMess: string = HttpErrorMessages.INTERNAL_SERVER_ERROR;
             let errStatusCode: number = HttpStatus.INTERNAL_SERVER_ERROR;
-    
+
             if (message && status) {
                 errMess = message;
                 errStatusCode = status;
             }
 
-            throw new HttpException(
-                errMess, 
-                errStatusCode
-            );
+            throw new HttpException(errMess, errStatusCode);
         }
     }
 
@@ -273,7 +296,7 @@ export class TransactionsController {
 
     //     } catch (error) {
     //         throw new HttpException(
-    //             HttpErrorMessages.UPDATE, 
+    //             HttpErrorMessages.UPDATE,
     //             HttpStatus.INTERNAL_SERVER_ERROR
     //         );
     //     }
@@ -289,10 +312,9 @@ export class TransactionsController {
     //         return this.service.deleteById(id);
     //     } catch (error) {
     //         throw new HttpException(
-    //             HttpErrorMessages.DELETE, 
+    //             HttpErrorMessages.DELETE,
     //             HttpStatus.INTERNAL_SERVER_ERROR
     //         );
     //     }
     // }
-
 }
