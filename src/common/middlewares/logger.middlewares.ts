@@ -5,6 +5,5 @@ export function LoggerMiddleware(
     res: Response,
     next: NextFunction,
 ) {
-    console.log('=============== LoggerMiddleware req ', req);
     next();
 }

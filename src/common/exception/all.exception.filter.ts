@@ -4,10 +4,14 @@ import {
     ArgumentsHost,
     HttpException,
     HttpStatus,
-    Logger
+    Logger,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { HttpErrorMessages, IResponseBody, ENV_LABELS } from '../constant';
+import {
+    HttpErrorMessages,
+    IResponseBody,
+    ENVIRONMENT,
+} from '../constants';
 import { Response } from 'express';
 import { MongooseError } from 'mongoose';
 
@@ -15,11 +19,12 @@ type ExceptionType = HttpException | Error | MongooseError;
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-    private readonly logger = new Logger(AllExceptionsFilter.name, 
+    private readonly logger = new Logger(
+        AllExceptionsFilter.name,
         // { timestamp: true }
     );
 
-    constructor(private readonly httpAdapterHost: HttpAdapterHost) { }
+    constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
     catch(exception: ExceptionType, host: ArgumentsHost) {
         // In certain situations `httpAdapter` might not be available in the
@@ -29,30 +34,29 @@ export class AllExceptionsFilter implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         let statusCode: number = HttpStatus.INTERNAL_SERVER_ERROR;
-        let message: string = exception.message // || HttpErrorMessages.INTERNAL_SERVER_ERROR;
+        let message: string = exception.message; // || HttpErrorMessages.INTERNAL_SERVER_ERROR;
         const ENV = process.env.ENV;
 
         if (exception instanceof MongooseError) {
-            
         }
 
         if (exception instanceof Error) {
             this.logger.error(message);
-            if (ENV === ENV_LABELS.PROD) {
+            if (ENV === ENVIRONMENT.PRODUCTION) {
                 message = HttpErrorMessages.INTERNAL_SERVER_ERROR;
             }
         }
-        
+
         if (exception instanceof HttpException) {
             statusCode = exception.getStatus();
-        } 
+        }
 
         response.status(statusCode);
         const responseBody: IResponseBody = {
             statusCode,
-            message
-        }
-        
+            message,
+        };
+
         httpAdapter.reply(response, responseBody);
     }
 }

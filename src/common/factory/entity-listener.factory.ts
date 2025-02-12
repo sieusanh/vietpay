@@ -1,23 +1,20 @@
-import { 
-    DataSource, 
-    EntitySubscriberInterface, 
-    EventSubscriber, InsertEvent
+import {
+    // DataSource,
+    EntitySubscriberInterface,
+    EventSubscriber,
+    InsertEvent,
 } from 'typeorm';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { BaseEntity } from 'src/modules/base';
+// import { InjectDatsaSource } from '@nestjs/typeorm';
+import { BaseEntity } from 'src/feature-modules/base';
 
-
-@EventSubscriber()
-export class EntityListenerService<Entity extends BaseEntity, DataSource> // UserSubscriber
-implements EntitySubscriberInterface {
-
+@EventSubscriber() // UserSubscriber
+export class EntityListenerService<Entity extends BaseEntity, DataSource>
+    implements EntitySubscriberInterface
+{
     // @InjectDataSource()
     // protected dataSource: DataSource;
 
-    constructor(
-        private dataSource: DataSource
-    ) {
-
+    constructor(private dataSource: DataSource) {
         // this.dataSource.subscribers.push(this);
     }
 

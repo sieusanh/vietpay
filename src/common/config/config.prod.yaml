@@ -1,25 +1,24 @@
 app:
-  host: 'localhost'
-  port: 3000
+    host: 'localhost'
+    port: 3000
 
 db:
-  postgres:
-    type: 'postgres'
-    host: 'localhost'
-    port: 5432
-    username: 'postgres'
-    password: 'postgres123'
-    database: 'pg_vietpay'
-    autoLoadEntities: true
-    # synchronize: false,
-    # entities: [Account],
-    # Setting synchronize: true shouldn't be used in production - otherwise you can lose production data.
-    # Addition properties
-    # retryAttempts: 10
-    # retryDelay: 3000
-    # autoLoadEntities: false
+    postgres:
+        type: 'postgres'
+        host: 'localhost'
+        port: 5432
+        username: 'postgres'
+        password: 'postgres123'
+        database: 'pg_vietpay'
+        autoLoadEntities: true
+        # synchronize: false,
+        # entities: [Account],
+        # Setting synchronize: true shouldn't be used in production - otherwise you can lose production data.
+        # Addition properties
+        # retryAttempts: 10
+        # retryDelay: 3000
+        # autoLoadEntities: false
 
-  mongodb:
-    uri: 'mongodb://localhost:27017/mg_vietpay'
-
+    mongodb:
+        uri: 'mongodb://localhost:27017/mg_vietpay'
 JWT_SECRET_KEY: dev@chunhat123

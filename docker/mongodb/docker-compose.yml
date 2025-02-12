@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+    mongo_db:
+        image: mongo:6-jammy
+        container_name: MongoContainer
+        restart: always
+        environment:
+            - MONGO_USER=mongo
+            - MONGO_PASSWORD=mongo123
+        ports:
+            - '27017:27017'
+        volumes:
+            - mongo_db:/var/lib/mongodb/data
+
+volumes:
+    mongo_db:
+        driver: local

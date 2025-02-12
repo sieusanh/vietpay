@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from 'src/modules';
+import { AppModule } from 'system-modules/app';
 import {
     SwaggerModule,
     DocumentBuilder,
@@ -8,12 +8,11 @@ import {
 import { LoggerMiddleware } from './common/middlewares';
 // import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
-import { AccountDto } from 'modules/accounts';
-import { QueryParams } from 'common/http';
+import { CreateAccountDto } from 'src/feature-modules/accounts';
+import { QueryOneParams, QueryManyParams, IApp } from 'common/types';
 import * as cors from 'cors';
 import helmet from 'helmet';
-import { ConsoleService } from 'common/log';
-import { IApp } from 'common/config';
+import { ConsoleService } from 'system-modules/log';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
@@ -40,7 +39,7 @@ async function bootstrap() {
         .build();
 
     const swaggerOptions: SwaggerDocumentOptions = {
-        extraModels: [QueryParams, AccountDto],
+        extraModels: [QueryOneParams, QueryManyParams, CreateAccountDto],
         //   autoTagControllers: true,
     };
     const document = () =>
@@ -50,6 +49,7 @@ async function bootstrap() {
         swaggerOptions: {
             docExpansion: 'none',
         },
+        // jsonDocumentUrl: "swagger/json"
     });
 
     process.on('unhandledRejection', (error, promise) => {

@@ -1,9 +1,8 @@
 app:
-  host: 'localhost'
-  port: 3000
+    host: 'localhost'
+    port: 3000
 
-db:
-  postgres:
+postgres:
     type: 'postgres'
     host: 'localhost'
     port: 5432
@@ -19,7 +18,6 @@ db:
     # retryDelay: 3000
     # autoLoadEntities: false
 
-  mongodb:
+mongodb:
     uri: 'mongodb://localhost:27017/mg_vietpay'
-
 JWT_SECRET_KEY: dev@chunhat123

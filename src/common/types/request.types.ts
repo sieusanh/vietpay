@@ -1,11 +1,11 @@
 import { Request } from 'express';
-import { CODE } from 'common/constant';
+import { CODE } from 'common/types';
 
-interface ICurrentAccount {
+export interface ICurrentAccount {
     username: string;
     email?: string;
     phone?: string;
-    full_name: string;
+    fullName: string;
     avatar?: string;
     gender?: string;
     roleCode?: CODE;
